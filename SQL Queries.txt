@@ -1,0 +1,124 @@
+1) Total Sales Value:
+
+SELECT SUM(Sales_Value) AS Total_Sales
+FROM global_electronics.sales_final;
+
+2) Total cost:
+
+SELECT SUM(Unit_Cost_USD) AS Total_Cost
+FROM global_electronics.products;
+
+3) Total Profit:
+
+SELECT 
+    SUM(global_electronics.sales_final.Sales_Value) - SUM(global_electronics.products.Unit_Cost_USD) AS Total_Profit
+FROM 
+    global_electronics.sales_final
+JOIN 
+    global_electronics.products ON global_electronics.sales_final.ProductKey = global_electronics.products.ProductKey;
+
+4) Sales by Product Category:
+SELECT 
+    CustomerKey, 
+    SUM(Sales_Value) AS Total_Sales
+FROM 
+    global_electronics.sales_final
+GROUP BY 
+    CustomerKey
+ORDER BY 
+    Total_Sales DESC;
+
+5) Profit by product category:
+
+SELECT 
+    global_electronics.sales_final.Category, 
+    SUM(global_electronics.sales_final.Sales_Value) - SUM(global_electronics.products.Unit_Cost_USD) AS Profit
+FROM 
+    global_electronics.sales_final
+JOIN 
+    global_electronics.products ON global_electronics.sales_final.ProductKey = global_electronics.products.ProductKey
+GROUP BY 
+    global_electronics.sales_final.Category;
+
+6)top 5 products by sales
+
+SELECT 
+    global_electronics.sales_final.ProductKey, 
+    SUM(global_electronics.sales_final.Sales_Value) AS Total_Sales
+FROM 
+    global_electronics.sales_final
+GROUP BY 
+    global_electronics.sales_final.ProductKey
+ORDER BY 
+    Total_Sales DESC
+LIMIT 5;
+
+7) top 5 products by profit:
+
+SELECT 
+    global_electronics.sales_final.ProductKey, 
+    SUM(global_electronics.sales_final.Sales_Value) - SUM(global_electronics.products.Unit_Cost_USD) AS Profit
+FROM 
+    global_electronics.sales_final
+JOIN 
+    global_electronics.products ON global_electronics.sales_final.ProductKey = global_electronics.products.ProductKey
+GROUP BY 
+    global_electronics.sales_final.ProductKey
+ORDER BY 
+    Profit DESC
+LIMIT 5;
+
+8) Monthly sales:
+
+SELECT 
+    DATE_FORMAT(global_electronics.sales_final.Order_Date, '%Y-%m') AS Month, 
+    SUM(global_electronics.sales_final.Sales_Value) AS Total_Sales
+FROM 
+    global_electronics.sales_final
+GROUP BY 
+    Month
+ORDER BY 
+    Month;
+
+9) monthly profit:
+
+SELECT 
+    DATE_FORMAT(global_electronics.sales_final.Order_Date, '%Y-%m') AS Month, 
+    SUM(global_electronics.sales_final.Sales_Value) - SUM(global_electronics.products.Unit_Cost_USD) AS Profit
+FROM 
+    global_electronics.sales_final
+JOIN 
+    global_electronics.products ON global_electronics.sales_final.ProductKey = global_electronics.products.ProductKey
+GROUP BY 
+    Month
+ORDER BY 
+    Month;
+
+
+10) Sales by Customers:
+
+SELECT 
+    global_electronics.sales_final.CustomerKey, 
+    SUM(global_electronics.sales_final.Sales_Value) AS Total_Sales
+FROM 
+    global_electronics.sales_final
+GROUP BY 
+    global_electronics.sales_final.CustomerKey
+ORDER BY 
+    Total_Sales DESC;
+
+11) top 5 Customers by purchases:
+
+SELECT 
+    global_electronics.sales_final.CustomerKey, 
+    SUM(global_electronics.sales_final.Sales_Value) AS Total_Sales
+FROM 
+    global_electronics.sales_final
+GROUP BY 
+    global_electronics.sales_final.CustomerKey
+ORDER BY 
+    Total_Sales DESC
+LIMIT 5;
+
+
+
